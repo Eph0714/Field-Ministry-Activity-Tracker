@@ -1,0 +1,22 @@
+# Android
+*.iml
+.gradle/
+.kotlin/
+/local.properties
+.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+app/build/
+app/release/
+
+# Backend
+backend/node_modules/
+backend/.env
+backend/uploads/photos/*
+!backend/uploads/photos/.gitkeep
+
+# Local notes containing plaintext credentials - never commit these
+FIELD MINISTRY ACCOUNT.txt
