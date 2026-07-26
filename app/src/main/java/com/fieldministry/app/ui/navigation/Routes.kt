@@ -16,6 +16,10 @@ object Routes {
     const val ADMIN_MANAGE_USERS = "admin/manage-users"
     const val ADMIN_MANAGE_MUNICIPALITIES = "admin/manage-municipalities"
     const val ADMIN_MANAGE_BARANGAYS = "admin/manage-barangays"
+    const val ADMIN_MANAGE_PH_REGIONS = "admin/manage-ph-regions"
+    const val ADMIN_MANAGE_PH_PROVINCES = "admin/manage-ph-provinces"
+    const val ADMIN_MANAGE_PH_MUNICIPALITIES = "admin/manage-ph-municipalities"
+    const val ADMIN_MANAGE_PH_BARANGAYS = "admin/manage-ph-barangays"
     const val REPORTS = "reports"
 
     private const val HOUSEHOLDER_PROFILE_BASE = "householders/profile"

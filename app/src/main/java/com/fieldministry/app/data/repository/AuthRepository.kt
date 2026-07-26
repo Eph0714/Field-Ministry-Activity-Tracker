@@ -17,8 +17,28 @@ class AuthRepository(
     private val api: ApiService,
     private val sessionManager: SessionManager,
 ) {
-    suspend fun signup(name: String, email: String, password: String) {
-        api.signup(SignUpRequest(name, email, password))
+    suspend fun signup(
+        name: String,
+        email: String,
+        password: String,
+        contactNumber: String?,
+        phRegionId: Int?,
+        phProvinceId: Int?,
+        phMunicipalityId: Int?,
+        phBarangayId: Int?,
+    ) {
+        api.signup(
+            SignUpRequest(
+                name = name,
+                email = email,
+                password = password,
+                contactNumber = contactNumber,
+                phRegionId = phRegionId,
+                phProvinceId = phProvinceId,
+                phMunicipalityId = phMunicipalityId,
+                phBarangayId = phBarangayId,
+            )
+        )
     }
 
     suspend fun login(email: String, password: String) {

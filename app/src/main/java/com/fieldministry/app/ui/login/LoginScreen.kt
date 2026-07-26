@@ -29,10 +29,10 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -156,13 +156,21 @@ fun LoginScreen(
                         Text(if (state.isLoading) "Signing in..." else "Sign In")
                     }
 
-                    TextButton(
+                    Text(
+                        "New here?",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 16.dp),
+                    )
+                    OutlinedButton(
                         onClick = onSignUp,
+                        shape = RoundedCornerShape(12.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 4.dp),
+                            .height(50.dp)
+                            .padding(top = 8.dp),
                     ) {
-                        Text("Don't have an account? Sign Up", color = BannerBlue)
+                        Text("Create New Account", color = BannerBlue)
                     }
                 }
             }

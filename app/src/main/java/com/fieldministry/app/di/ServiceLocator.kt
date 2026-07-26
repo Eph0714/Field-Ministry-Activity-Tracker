@@ -7,6 +7,7 @@ import com.fieldministry.app.data.remote.NetworkModule
 import com.fieldministry.app.data.repository.AuthRepository
 import com.fieldministry.app.data.repository.BibleStudyRepository
 import com.fieldministry.app.data.repository.HouseholderRepository
+import com.fieldministry.app.data.repository.PhAddressRepository
 import com.fieldministry.app.data.repository.ReferenceDataRepository
 import com.fieldministry.app.data.repository.ReportRepository
 import com.fieldministry.app.data.repository.ReturnVisitRepository
@@ -64,6 +65,8 @@ object ServiceLocator {
     val userRepository: UserRepository by lazy { UserRepository(api) }
 
     val reportRepository: ReportRepository by lazy { ReportRepository(api) }
+
+    val phAddressRepository: PhAddressRepository by lazy { PhAddressRepository(api) }
 
     val syncManager: SyncManager by lazy {
         SyncManager(

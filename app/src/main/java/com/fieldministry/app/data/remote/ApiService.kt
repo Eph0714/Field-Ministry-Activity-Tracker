@@ -196,4 +196,53 @@ interface ApiService {
         @Query("date_from") dateFrom: String? = null,
         @Query("date_to") dateTo: String? = null,
     ): ReportsSummaryDto
+
+    // National PH address (PSGC) - used by Sign Up's cascading dropdowns ----
+    @GET("geo/regions")
+    suspend fun getPhRegions(): List<PhRegionDto>
+
+    @GET("geo/provinces")
+    suspend fun getPhProvinces(@Query("region_id") regionId: Int): List<PhProvinceDto>
+
+    @GET("geo/municipalities")
+    suspend fun getPhMunicipalities(@Query("province_id") provinceId: Int, @Query("search") search: String? = null): List<PhMunicipalityDto>
+
+    @GET("geo/barangays")
+    suspend fun getPhBarangays(@Query("municipality_id") municipalityId: Int, @Query("search") search: String? = null): List<PhBarangayDto>
+
+    @POST("geo/regions")
+    suspend fun createPhRegion(@Body body: Map<String, @JvmSuppressWildcards Any?>): PhRegionDto
+
+    @PUT("geo/regions/{id}")
+    suspend fun updatePhRegion(@Path("id") id: Int, @Body body: Map<String, @JvmSuppressWildcards Any?>): PhRegionDto
+
+    @DELETE("geo/regions/{id}")
+    suspend fun deletePhRegion(@Path("id") id: Int): Response<Unit>
+
+    @POST("geo/provinces")
+    suspend fun createPhProvince(@Body body: Map<String, @JvmSuppressWildcards Any?>): PhProvinceDto
+
+    @PUT("geo/provinces/{id}")
+    suspend fun updatePhProvince(@Path("id") id: Int, @Body body: Map<String, @JvmSuppressWildcards Any?>): PhProvinceDto
+
+    @DELETE("geo/provinces/{id}")
+    suspend fun deletePhProvince(@Path("id") id: Int): Response<Unit>
+
+    @POST("geo/municipalities")
+    suspend fun createPhMunicipality(@Body body: Map<String, @JvmSuppressWildcards Any?>): PhMunicipalityDto
+
+    @PUT("geo/municipalities/{id}")
+    suspend fun updatePhMunicipality(@Path("id") id: Int, @Body body: Map<String, @JvmSuppressWildcards Any?>): PhMunicipalityDto
+
+    @DELETE("geo/municipalities/{id}")
+    suspend fun deletePhMunicipality(@Path("id") id: Int): Response<Unit>
+
+    @POST("geo/barangays")
+    suspend fun createPhBarangay(@Body body: Map<String, @JvmSuppressWildcards Any?>): PhBarangayDto
+
+    @PUT("geo/barangays/{id}")
+    suspend fun updatePhBarangay(@Path("id") id: Int, @Body body: Map<String, @JvmSuppressWildcards Any?>): PhBarangayDto
+
+    @DELETE("geo/barangays/{id}")
+    suspend fun deletePhBarangay(@Path("id") id: Int): Response<Unit>
 }

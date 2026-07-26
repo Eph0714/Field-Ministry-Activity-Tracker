@@ -11,6 +11,10 @@ import com.fieldministry.app.data.session.SessionManager
 import com.fieldministry.app.ui.admin.AdminHomeScreen
 import com.fieldministry.app.ui.admin.ManageBarangaysScreen
 import com.fieldministry.app.ui.admin.ManageMunicipalitiesScreen
+import com.fieldministry.app.ui.admin.ManagePhBarangaysScreen
+import com.fieldministry.app.ui.admin.ManagePhMunicipalitiesScreen
+import com.fieldministry.app.ui.admin.ManagePhProvincesScreen
+import com.fieldministry.app.ui.admin.ManagePhRegionsScreen
 import com.fieldministry.app.ui.admin.ManageUsersScreen
 import com.fieldministry.app.ui.admin.PendingApprovalsScreen
 import com.fieldministry.app.ui.biblestudy.BibleStudyScreen
@@ -107,6 +111,10 @@ fun AppNavGraph(sessionManager: SessionManager) {
                 onManageUsers = { navController.navigate(Routes.ADMIN_MANAGE_USERS) },
                 onManageMunicipalities = { navController.navigate(Routes.ADMIN_MANAGE_MUNICIPALITIES) },
                 onManageBarangays = { navController.navigate(Routes.ADMIN_MANAGE_BARANGAYS) },
+                onManagePhRegions = { navController.navigate(Routes.ADMIN_MANAGE_PH_REGIONS) },
+                onManagePhProvinces = { navController.navigate(Routes.ADMIN_MANAGE_PH_PROVINCES) },
+                onManagePhMunicipalities = { navController.navigate(Routes.ADMIN_MANAGE_PH_MUNICIPALITIES) },
+                onManagePhBarangays = { navController.navigate(Routes.ADMIN_MANAGE_PH_BARANGAYS) },
             )
         }
 
@@ -124,6 +132,22 @@ fun AppNavGraph(sessionManager: SessionManager) {
 
         composable(Routes.ADMIN_MANAGE_BARANGAYS) {
             ManageBarangaysScreen(onBack = { navController.popBackStack() })
+        }
+
+        composable(Routes.ADMIN_MANAGE_PH_REGIONS) {
+            ManagePhRegionsScreen(onBack = { navController.popBackStack() })
+        }
+
+        composable(Routes.ADMIN_MANAGE_PH_PROVINCES) {
+            ManagePhProvincesScreen(onBack = { navController.popBackStack() })
+        }
+
+        composable(Routes.ADMIN_MANAGE_PH_MUNICIPALITIES) {
+            ManagePhMunicipalitiesScreen(onBack = { navController.popBackStack() })
+        }
+
+        composable(Routes.ADMIN_MANAGE_PH_BARANGAYS) {
+            ManagePhBarangaysScreen(onBack = { navController.popBackStack() })
         }
 
         composable(Routes.REPORTS) {

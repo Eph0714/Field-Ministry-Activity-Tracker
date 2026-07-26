@@ -17,7 +17,16 @@ data class LoginRequest(val email: String, val password: String)
 
 data class LoginResponse(val token: String, val user: UserDto)
 
-data class SignUpRequest(val name: String, val email: String, val password: String)
+data class SignUpRequest(
+    val name: String,
+    val email: String,
+    val password: String,
+    @SerializedName("contact_number") val contactNumber: String?,
+    @SerializedName("ph_region_id") val phRegionId: Int?,
+    @SerializedName("ph_province_id") val phProvinceId: Int?,
+    @SerializedName("ph_municipality_id") val phMunicipalityId: Int?,
+    @SerializedName("ph_barangay_id") val phBarangayId: Int?,
+)
 
 data class ChangePasswordRequest(
     @SerializedName("currentPassword") val currentPassword: String,
