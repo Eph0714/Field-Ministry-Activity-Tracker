@@ -13,13 +13,13 @@ android {
         applicationId = "com.fieldministry.app"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // TODO: swap for the Render-hosted URL once the backend is deployed (see backend/render.yaml).
-        buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:3000/api/\"")
+        // Backend base URL - the Render-hosted API, reachable from anywhere (not just an emulator/LAN).
+        buildConfigField("String", "API_BASE_URL", "\"https://field-ministry-tracker-backend.onrender.com/api/\"")
     }
 
     buildTypes {
@@ -28,7 +28,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug {
-            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:3000/api/\"")
+            buildConfigField("String", "API_BASE_URL", "\"https://field-ministry-tracker-backend.onrender.com/api/\"")
         }
     }
 
