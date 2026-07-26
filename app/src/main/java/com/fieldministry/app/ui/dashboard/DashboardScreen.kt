@@ -22,8 +22,8 @@ import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Undo
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -75,7 +75,30 @@ fun DashboardScreen(
         if (state.session == null) onLoggedOut()
     }
 
+    // DashboardViewModel survives navigating away and back (it's scoped to the nav back-stack
+    // entry), so re-check for an update every time this composable re-enters composition - i.e.
+    // every time the user returns to the Dashboard, not just on the very first app launch.
+    LaunchedEffect(Unit) {
+        viewModel.refreshUpdateCheck()
+    }
+
     val role = state.session?.role
+
+    state.availableUpdate?.let { update ->
+        AlertDialog(
+            onDismissRequest = viewModel::dismissUpdate,
+            title = { Text("Update Available") },
+            text = { Text("Version ${update.version} is ready. Do you want to update now?") },
+            confirmButton = {
+                TextButton(onClick = { viewModel.installUpdate(context) }, enabled = !state.isDownloadingUpdate) {
+                    Text(if (state.isDownloadingUpdate) "Downloading..." else "Update")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = viewModel::dismissUpdate) { Text("Not Now") }
+            },
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -93,20 +116,6 @@ fun DashboardScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            state.availableUpdate?.let { update ->
-                Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Update available: ${update.version}", style = MaterialTheme.typography.titleMedium)
-                        Row(modifier = Modifier.padding(top = 8.dp)) {
-                            TextButton(onClick = { viewModel.installUpdate(context) }, enabled = !state.isDownloadingUpdate) {
-                                Text(if (state.isDownloadingUpdate) "Downloading..." else "Update Now")
-                            }
-                            TextButton(onClick = viewModel::dismissUpdate) { Text("Later") }
-                        }
-                    }
-                }
-            }
-
             Column {
                 Text("Welcome, ${state.session?.name ?: ""}", style = MaterialTheme.typography.headlineSmall)
                 Text("Role: ${role ?: ""}", style = MaterialTheme.typography.bodyMedium)

@@ -13,7 +13,7 @@ android {
         applicationId = "com.fieldministry.app"
         minSdk = 24
         targetSdk = 34
-        versionCode = 6
+        versionCode = 7
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -24,7 +24,7 @@ android {
         // Separate from versionName (which stays "1.0" for display in the app/footer) - this is the
         // identifier actually compared against GitHub release tags by UpdateChecker, so it must be
         // bumped every release in lockstep with the git tag, or the update banner will never clear.
-        buildConfigField("String", "BUILD_VERSION", "\"1.0.4\"")
+        buildConfigField("String", "BUILD_VERSION", "\"1.0.5\"")
     }
 
     buildTypes {

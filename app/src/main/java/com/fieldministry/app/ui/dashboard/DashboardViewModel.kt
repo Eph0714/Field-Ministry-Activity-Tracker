@@ -81,6 +81,10 @@ class DashboardViewModel(
         checkForUpdate()
     }
 
+    /** Re-checks for an update. Called on first load, whenever the user returns to this screen
+     * (see the LaunchedEffect in DashboardScreen), and every time Sync is tapped. */
+    fun refreshUpdateCheck() = checkForUpdate()
+
     private data class DashboardCounts(val searching: Int, val bibleStudy: Int, val returnVisit: Int, val householder: Int)
 
     private fun refreshPendingCount() {
@@ -132,6 +136,7 @@ class DashboardViewModel(
                 _state.update { it.copy(isSyncing = false, syncError = "Sync failed. Try again when you have a connection.") }
             }
             refreshPendingCount()
+            checkForUpdate()
         }
     }
 
