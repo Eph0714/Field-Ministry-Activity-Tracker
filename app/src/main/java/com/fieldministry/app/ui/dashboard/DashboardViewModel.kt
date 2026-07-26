@@ -100,7 +100,7 @@ class DashboardViewModel(
 
     private fun checkForUpdate() {
         viewModelScope.launch {
-            val update = UpdateChecker.checkForUpdate(BuildConfig.VERSION_NAME)
+            val update = UpdateChecker.checkForUpdate(BuildConfig.BUILD_VERSION)
             _state.update { it.copy(availableUpdate = update) }
         }
     }

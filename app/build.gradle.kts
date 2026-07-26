@@ -13,13 +13,18 @@ android {
         applicationId = "com.fieldministry.app"
         minSdk = 24
         targetSdk = 34
-        versionCode = 4
+        versionCode = 5
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Backend base URL - the Render-hosted API, reachable from anywhere (not just an emulator/LAN).
         buildConfigField("String", "API_BASE_URL", "\"https://field-ministry-tracker-backend.onrender.com/api/\"")
+
+        // Separate from versionName (which stays "1.0" for display in the app/footer) - this is the
+        // identifier actually compared against GitHub release tags by UpdateChecker, so it must be
+        // bumped every release in lockstep with the git tag, or the update banner will never clear.
+        buildConfigField("String", "BUILD_VERSION", "\"1.0.3\"")
     }
 
     buildTypes {
