@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 data class LoginState(
     val email: String = "",
@@ -55,6 +57,15 @@ class LoginViewModel(
                 _state.update { it.copy(isLoading = false, loggedIn = true) }
             } catch (e: LoginException) {
                 _state.update { it.copy(isLoading = false, error = e.message) }
+            } catch (e: SocketTimeoutException) {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        error = "The server is waking up (this can take up to a minute after being idle) — please try again.",
+                    )
+                }
+            } catch (e: UnknownHostException) {
+                _state.update { it.copy(isLoading = false, error = "No internet connection. Check your WiFi or mobile data.") }
             } catch (e: Exception) {
                 _state.update { it.copy(isLoading = false, error = "Unable to reach the server. Check your connection.") }
             }
