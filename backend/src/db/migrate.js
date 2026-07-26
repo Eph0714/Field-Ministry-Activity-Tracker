@@ -9,7 +9,11 @@ types.setTypeParser(1114, (val) => val);
 // Add future new columns here so an already-deployed DB picks them up too —
 // CREATE TABLE IF NOT EXISTS above can't retrofit columns onto an existing table.
 const NEW_COLUMNS = [
-  // { table: 'householders', column: 'some_new_field', definition: 'TEXT' },
+  { table: 'users', column: 'contact_number', definition: 'VARCHAR(30)' },
+  { table: 'users', column: 'ph_region_id', definition: 'INT REFERENCES ph_regions(id) ON DELETE SET NULL' },
+  { table: 'users', column: 'ph_province_id', definition: 'INT REFERENCES ph_provinces(id) ON DELETE SET NULL' },
+  { table: 'users', column: 'ph_municipality_id', definition: 'INT REFERENCES ph_municipalities(id) ON DELETE SET NULL' },
+  { table: 'users', column: 'ph_barangay_id', definition: 'INT REFERENCES ph_barangays(id) ON DELETE SET NULL' },
 ];
 
 async function ensureColumns(client) {

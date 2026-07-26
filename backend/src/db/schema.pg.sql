@@ -168,3 +168,46 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 );
 
 CREATE INDEX IF NOT EXISTS idx_audit_created_at ON audit_logs(created_at);
+
+-- Philippine national address reference data (PSGC) ------------------------
+-- Separate from municipalities/barangays above (this congregation's small,
+-- hand-managed territory list) - these four tables hold the full national
+-- Region/Province/Municipality/Barangay hierarchy, used only for user
+-- registration/profile addresses.
+
+CREATE TABLE IF NOT EXISTS ph_regions (
+  id SERIAL PRIMARY KEY,
+  psgc_code VARCHAR(20) NOT NULL UNIQUE,
+  name VARCHAR(150) NOT NULL,
+  code VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS ph_provinces (
+  id SERIAL PRIMARY KEY,
+  region_id INT NOT NULL REFERENCES ph_regions(id) ON DELETE CASCADE,
+  psgc_code VARCHAR(20) NOT NULL UNIQUE,
+  name VARCHAR(150) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_ph_province_region ON ph_provinces(region_id);
+
+CREATE TABLE IF NOT EXISTS ph_municipalities (
+  id SERIAL PRIMARY KEY,
+  province_id INT NOT NULL REFERENCES ph_provinces(id) ON DELETE CASCADE,
+  psgc_code VARCHAR(20) NOT NULL UNIQUE,
+  name VARCHAR(150) NOT NULL,
+  type VARCHAR(20) NOT NULL DEFAULT 'Municipality' CHECK (type IN ('City', 'Municipality'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_ph_municipality_province ON ph_municipalities(province_id);
+CREATE INDEX IF NOT EXISTS idx_ph_municipality_name ON ph_municipalities(name);
+
+CREATE TABLE IF NOT EXISTS ph_barangays (
+  id SERIAL PRIMARY KEY,
+  municipality_id INT NOT NULL REFERENCES ph_municipalities(id) ON DELETE CASCADE,
+  psgc_code VARCHAR(20) NOT NULL UNIQUE,
+  name VARCHAR(150) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_ph_barangay_municipality ON ph_barangays(municipality_id);
+CREATE INDEX IF NOT EXISTS idx_ph_barangay_name ON ph_barangays(name);

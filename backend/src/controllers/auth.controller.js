@@ -27,9 +27,32 @@ function toUserDto(row) {
 }
 
 async function signup(req, res) {
-  const { name, email, password } = req.body;
+  const {
+    name, email, password, contact_number,
+    ph_region_id, ph_province_id, ph_municipality_id, ph_barangay_id,
+  } = req.body;
+
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'name, email and password are required' });
+  }
+  if (!ph_region_id || !ph_province_id || !ph_municipality_id || !ph_barangay_id) {
+    return res.status(400).json({ error: 'Province, City/Municipality, and Barangay are required' });
+  }
+
+  // Confirm the address chain is internally consistent (barangay really
+  // belongs to that municipality, which really belongs to that province/region)
+  // rather than trusting four independently-supplied IDs at face value.
+  const { rows: chainRows } = await pool.query(
+    `SELECT b.id AS barangay_id, m.id AS municipality_id, p.id AS province_id, r.id AS region_id
+     FROM ph_barangays b
+     JOIN ph_municipalities m ON m.id = b.municipality_id
+     JOIN ph_provinces p ON p.id = m.province_id
+     JOIN ph_regions r ON r.id = p.region_id
+     WHERE b.id = $1 AND m.id = $2 AND p.id = $3 AND r.id = $4`,
+    [ph_barangay_id, ph_municipality_id, ph_province_id, ph_region_id]
+  );
+  if (chainRows.length === 0) {
+    return res.status(400).json({ error: 'Selected Region/Province/City/Barangay do not match each other' });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -37,10 +60,13 @@ async function signup(req, res) {
 
   try {
     const { rows } = await pool.query(
-      `INSERT INTO users (uuid, name, email, password_hash, role, approval_status)
-       VALUES ($1, $2, $3, $4, 'publisher', 'pending')
+      `INSERT INTO users (
+         uuid, name, email, password_hash, role, approval_status, contact_number,
+         ph_region_id, ph_province_id, ph_municipality_id, ph_barangay_id
+       )
+       VALUES ($1, $2, $3, $4, 'publisher', 'pending', $5, $6, $7, $8, $9)
        RETURNING *`,
-      [uuid, name, email, passwordHash]
+      [uuid, name, email, passwordHash, contact_number || null, ph_region_id, ph_province_id, ph_municipality_id, ph_barangay_id]
     );
     await logAudit(rows[0].id, 'SIGNUP', 'user', rows[0].id, { email });
     res.status(201).json({ message: 'Signup received, pending admin approval' });

@@ -11,6 +11,7 @@ const bibleStudiesRoutes = require('./routes/bibleStudies.routes');
 const returnVisitsRoutes = require('./routes/returnVisits.routes');
 const reportsRoutes = require('./routes/reports.routes');
 const adminRoutes = require('./routes/admin.routes');
+const geoRoutes = require('./routes/geo.routes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -31,6 +32,7 @@ app.use('/api/bible-studies', bibleStudiesRoutes);
 app.use('/api/return-visits', returnVisitsRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/geo', geoRoutes);
 
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 app.use(errorHandler);
